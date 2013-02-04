@@ -4,6 +4,7 @@
 
 #include <gtk/gtk.h>
 #include <gconf/gconf-client.h>
+#include <signal.h>
 
 typedef struct _Listener {
   GConfClient* client;
@@ -25,8 +26,8 @@ is_default_value (
     gconf_entry_get_key(entry),
     &error
   );
-  if (error)
-      return 0;
+  if (error || !def)
+      return FALSE;
   return gconf_value_compare(def, entry->value) == 0;
 }
 
@@ -74,6 +75,7 @@ entry_changed_callback (
   }
   #undef PRINTIZE
   #undef ERRIZE
+  fflush(stdout);
 }
 
 static
@@ -108,6 +110,16 @@ listen_cleanup (Listener* listener)
   gconf_client_remove_dir(listener->client, "/", NULL);
 }
 
+//***********************************************
+// Signals
+
+static
+void
+termination_handler (int signum)
+{
+  gtk_main_quit();
+}
+
 int
 main (int argc, char **argv)
 {
@@ -120,8 +132,12 @@ main (int argc, char **argv)
   listen_init(&listener);
 
   // TODO: implement "press any key to quit"
+  signal(SIGINT, termination_handler);
+  signal(SIGHUP, termination_handler);
+  signal(SIGTERM, termination_handler);
   gtk_main();
 
+  printf("\n");
   listen_cleanup(&listener);
   return 0;
 }
