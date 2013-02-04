@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e # fail on errors
+
+sudo yum install -y gtk2-devel GConf2-devel
+
