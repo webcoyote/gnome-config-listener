@@ -1,0 +1,4 @@
+"/apps/gnome-terminal/profiles/Default/use_system_font" "1" "bool" "default"
+"/apps/gnome-terminal/profiles/Default/use_system_font" "0" "bool" "set"
+"/apps/gnome-terminal/profiles/Default/font" "Monospace 12" "string" "default"
+"/apps/gnome-terminal/profiles/Default/font" "Monospace 18" "string" "set"

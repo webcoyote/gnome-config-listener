@@ -46,7 +46,7 @@ entry_changed_callback (
   #define PRINTIZE(TYPE, type, fmt)           \
     case GCONF_VALUE_##TYPE:                  \
       printf(                                 \
-        "\"%s\" \"" #fmt "\" " #type " %s\n", \
+        "\"%s\" \"" #fmt "\" \"" #type "\" \"%s\"\n", \
         gconf_entry_get_key(entry),           \
         gconf_value_get_##type(entry->value), \
         is_default ? "default" : "set"        \
@@ -137,7 +137,6 @@ main (int argc, char **argv)
   signal(SIGTERM, termination_handler);
   gtk_main();
 
-  printf("\n");
   listen_cleanup(&listener);
   return 0;
 }
